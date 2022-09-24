@@ -6,12 +6,13 @@ output: github_document
 editor_options: 
   chunk_output_type: console
 ---
-## Problem 1
+
 ```{r, echo=FALSE}
 library(ggplot2)
+library(tidyverse)
 ```
 
-
+## Problem 1
 ```{r}
 # load in the penguins dataset
 data("penguins", package = "palmerpenguins")
@@ -23,25 +24,13 @@ Details of the dataset:
 skimr::skim(penguins)
 ```
 
-```{r}
-# look at the actual table
-View(penguins)
-```
+This dataset has `r nrow(penguins)` rows and `r ncol(penguins)` columns, which consisting of 3 factor columns and 5 numeric columns. The column names are `r names(penguins)`. Only species, island, and year do not contain missing values. The mean flipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.
 
 ```{r}
-# output the number of columns and rows for the dataset
-ncol(penguins)
-nrow(penguins)
-```
-
-This dataset has 344 rows and 8 columns, which consisting of 3 factor columns and 5 numeric columns. The column names are species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex, and year. There are 344 penguin subjects. The mean flipper length is 201mm.
-
-```{r}
-# ggplot() is used to load the penguins dataset with bill length on x-axis and flipper length on y-axis. The color is set to correspond species. geom_point() is used to generate scatter plot, and theme_minimal to change the gray background to white. labs() is used to specify plot title.
+# ggplot() is used to load the penguins dataset with bill length on x-axis and flipper length on y-axis. The color is set to correspond species. geom_point() is used to generate scatter plot, and labs() is used to specify plot title.
 
 bill_flipper_plot = ggplot(data = penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) +
   geom_point() +
-  theme_minimal() +
   labs(title = "flipper_length_mm vs bill_length_mm")
 ```
 
@@ -50,3 +39,34 @@ bill_flipper_plot = ggplot(data = penguins, aes(x = bill_length_mm, y = flipper_
 ggsave(filename = "hw1_plot.pdf", plot = bill_flipper_plot)
 ```
 
+## Problem 2
+Using `tibble()` to create a dataframe according to the requirements.
+```{r}
+p2_df = 
+  tibble(
+    norm = rnorm(n = 10),
+    logical = norm > 0,
+    char = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"),
+    factor = factor(
+      c("low", "high", "medium", "medium", "low", "high", "low", "high", "medium", "high"),
+      levels = c("high", "medium", "low")
+    )
+  )
+
+p2_df
+```
+
+```{r}
+mean(p2_df$norm)
+mean(p2_df$logical)
+mean(p2_df$char)
+mean(p2_df$factor)
+```
+Only taking the means of `norm` and `logical` work, the means of `char` and `factor` does not work.
+
+```{r, results='hide'}
+as.numeric(p2_df$logical)
+as.numeric(p2_df$char)
+as.numeric(p2_df$factor)
+```
+The column of `logical` gets converted to numeric values of 0 and 1, indicating `FALSE` and `TRUE`. The column of `char` becomes `NA`s. The column of `factor` becomes values of 1, 2, 3 corresponding to `high`, `medium`, `low`.
