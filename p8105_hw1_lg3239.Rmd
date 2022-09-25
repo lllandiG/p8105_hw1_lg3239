@@ -62,11 +62,11 @@ mean(p2_df$logical)
 mean(p2_df$char)
 mean(p2_df$factor)
 ```
-Only taking the means of `norm` and `logical` work, the means of `char` and `factor` does not work.
+Only taking the means of `norm` and `logical` work, the means of `char` and `factor` do not work.
 
 ```{r, results='hide'}
 as.numeric(p2_df$logical)
 as.numeric(p2_df$char)
 as.numeric(p2_df$factor)
 ```
-The column of `logical` gets converted to numeric values of 0 and 1, indicating `FALSE` and `TRUE`. The column of `char` becomes `NA`s. The column of `factor` becomes values of 1, 2, 3 corresponding to `high`, `medium`, `low`.
+The column of `logical` gets converted to numeric values of 0 and 1, indicating `FALSE` and `TRUE`. The column of `char` becomes `NA`s because character strings are not formatted numbers and cannot be converted to numeric class. The column of `factor` becomes values of 1, 2, 3 corresponding to `high`, `medium`, `low`.
